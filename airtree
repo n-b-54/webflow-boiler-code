@@ -1,0 +1,470 @@
+gsap.registerPlugin(ScrollTrigger, Flip);
+let lenis, showAnim;
+function isSafari() {
+    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+}
+function checkScreenSize() {
+    isMobile = window.innerWidth <= 767;
+}
+checkScreenSize(), window.addEventListener("resize", checkScreenSize);
+var isMobile,
+    lenisActive = !1;
+$(document).ready(function () {
+    if (void 0 != Webflow.env("editor")) console.log("Editor is loaded: do not load custom js");
+    else if (!isSafari()) {
+        function e(t) {
+            lenis.raf(t), requestAnimationFrame(e);
+        }
+        (lenis = new Lenis({
+            duration: 1,
+            easing: (e) => Math.min(1, 1.001 - Math.pow(2, -10 * e)),
+            direction: "vertical",
+            gestureDirection: "vertical",
+            smooth: !0,
+            mouseMultiplier: 1,
+            smoothTouch: !1,
+            touchMultiplier: 2,
+            infinite: !1,
+        })).on("scroll", ScrollTrigger.update),
+            gsap.ticker.add((e) => {
+                lenis.raf(1e3 * e);
+            }),
+            requestAnimationFrame(e),
+            (lenisActive = !0);
+    }
+    $(".body--home").length && ($("html").css("overflow", "hidden"), lenisActive && lenis.stop());
+});
+let typeSplit;
+function runSplit() {
+    console.log("runSplit"), (typeSplit = new SplitType("[split=lines]", { types: "lines" }));
+    $("[split=lines] .line").each(function (e) {
+        $(this).wrap('<div class="line-wrapper">');
+    });
+}
+function Flip02() {
+    gsap.set(".loading-circle.is-stage-0, .loading-circle.is-stage-1, .loading-circle.is-stage-2:not(.is-float)", { opacity: 0 });
+    let e = Flip.getState(".is-stage-3 .loading-txt[big]", { props: "opacity" }),
+        t = Flip.getState(".is-stage-3 .loading-txt[small]", { props: "opacity" });
+    Flip.to(e, { targets: "[flip-big]", duration: 2.25, scale: 0.65, ease: "expo.inOut" }),
+        Flip.to(t, {
+            targets: "[flip-small]",
+            duration: 2.25,
+            scale: 0.65,
+            ease: "expo.inOut",
+            onStart() {
+                $("html").css("overflow", "hidden"), lenisActive && lenis.stop();
+            },
+            onComplete() {
+                $("html").css("overflow", "auto"),
+                    lenisActive && lenis.start(),
+                    gsap.set(".loading-anim-wrap", { pointerEvents: "none" }, "<"),
+                    gsap.to(".loading-anim-wrap .loading-anim-text, .hero-anim-txt-wrap", { opacity: "0", pointerEvents: "none", duration: 0.25 }),
+                    gsap.to(".hero-anim-txt", { opacity: "1", duration: 0.25 }),
+                    gsap.set(".loading-circle.is-stage-2.is-float", { opacity: 0 }),
+                    gsap.set(".tree-ball.in-tree", { opacity: 1 });
+            },
+        });
+    let i = Flip.getState(".tree-ball.is-floating.is-01"),
+        o = Flip.getState(".tree-ball.is-floating.is-02"),
+        n = Flip.getState(".tree-ball.is-floating.is-03"),
+        a = Flip.getState(".tree-ball.is-floating.is-04"),
+        s = Flip.getState(".tree-ball.is-floating.is-05"),
+        r = Flip.getState(".tree-ball.is-floating.is-06"),
+        l = Flip.getState(".tree-ball.is-floating.is-07");
+    Flip.to(i, { targets: ".loading-circle.is-stage-2.is-float.is-01", duration: 2.25, ease: "expo.inOut" }),
+        Flip.to(o, { targets: ".loading-circle.is-stage-2.is-float.is-02", duration: 2.25, ease: "expo.inOut" }),
+        Flip.to(n, { targets: ".loading-circle.is-stage-2.is-float.is-03", duration: 2.25, ease: "expo.inOut" }),
+        Flip.to(a, { targets: ".loading-circle.is-stage-2.is-float.is-04", duration: 2.25, ease: "expo.inOut" }),
+        Flip.to(s, { targets: ".loading-circle.is-stage-2.is-float.is-05", duration: 2.25, ease: "expo.inOut" }),
+        Flip.to(r, { targets: ".loading-circle.is-stage-2.is-float.is-06", duration: 2.25, ease: "expo.inOut" }),
+        Flip.to(l, { targets: ".loading-circle.is-stage-2.is-float.is-07", duration: 2.25, ease: "expo.inOut" }),
+        gsap.to(".loading-anim-wrap", { backgroundColor: "transparent", delay: 0.75 }),
+        gsap.from(".swiper-slide.is-hero", { y: "100vh", delay: 0.75, ease: "expo.out", duration: 2.25 }),
+        gsap.from("[anim-heading]", { yPercent: 80, opacity: 0, stagger: { each: 0.02, ease: "power1.out" }, duration: 0.8, delay: 1 });
+}
+function Flip03() {
+    let e = Flip.getState(".tree-ball.is-floating.is-01");
+    gsap.set(".loading-circle.is-stage-1", { opacity: 0 }), gsap.set(".loading-circle.is-stage-2.is-float", { opacity: 1 }), Flip.to(e, { targets: ".loading-circle.is-stage-2.is-float", duration: 2.25, scale: 0.65, ease: "expo.inOut" });
+}
+function loadLottieScript() {
+    return new Promise((e, t) => {
+        let i = document.createElement("script");
+        (i.src = "https://unpkg.com/@lottiefiles/lottie-player@0.4.0/dist/lottie-player.js"), (i.onload = e), (i.onerror = t), document.body.appendChild(i);
+    });
+}
+runSplit(),
+    gsap.set(".tree-ball.in-tree", { opacity: 0 }),
+    setTimeout(function () {
+        Flip02();
+    }, 2600),
+    window.addEventListener("DOMContentLoaded", (e) => {
+        function t(e, t) {
+            let i = typeof e;
+            return "string" != typeof t || "" === t.trim() ? e : ("true" === t && "boolean" === i) || (("false" !== t || "boolean" !== i) && (isNaN(t) && "string" === i ? t : isNaN(t) || "number" !== i ? e : +t));
+        }
+        $("[tr-scrollflip-element='component']").each(function (e) {
+            let i = $(this),
+                o = i.find("[tr-scrollflip-element='origin']"),
+                n = i.find("[tr-scrollflip-element='target']"),
+                a = i.find("[tr-scrollflip-scrubstart]"),
+                s = i.find("[tr-scrollflip-scrubend]"),
+                r = t("top top", a.attr("tr-scrollflip-scrubstart")),
+                l = t("bottom bottom", s.attr("tr-scrollflip-scrubend")),
+                c = t(0, i.attr("tr-scrollflip-staggerspeed")),
+                p = t("start", i.attr("tr-scrollflip-staggerdirection")),
+                d = t(!1, i.attr("tr-scrollflip-scale")),
+                u = t(0, i.attr("tr-scrollflip-breakpoint")),
+                f = e,
+                m,
+                g;
+            function h() {
+                m && (m.kill(), gsap.set(n, { clearProps: "all" })),
+                    $("body").addClass("scrollflip-relative"),
+                    gsap.matchMedia().add(`(min-width: ${u}px)`, () => {
+                        let e = Flip.getState(o);
+                        (m = gsap.timeline({ scrollTrigger: { trigger: a, endTrigger: s, start: r, end: l, scrub: !0 } })).add(Flip.from(e, { targets: n, scale: d, ease: "power1.inOut", stagger: { amount: c, from: p } }));
+                    }),
+                    $("body").removeClass("scrollflip-relative");
+            }
+            o.each(function (e) {
+                let t = `${f}-${e}`;
+                $(this).attr("data-flip-id", t), n.eq(e).attr("data-flip-id", t);
+            }),
+                h(),
+                window.addEventListener("resize", function () {
+                    clearTimeout(g),
+                        (g = setTimeout(function () {
+                            h();
+                        }, 250));
+                });
+        });
+    }),
+    barba.init({
+        preventRunning: !0,
+        timeout: 5e3,
+        transitions: [
+            {
+                name: "transition",
+                before() {
+                    window.fsAttributes.destroy(), $("html").css("cursor", "wait");
+                },
+                leave: (e) => (gsap.to(".home-gradient", { opacity: 0, ease: "power4.in", duration: 0.45 }), gsap.to($(e.current.container).find(".section"), { opacity: 0, duration: 0.45, ease: "power4.in" })),
+                enter(e) {
+                    "white" === e.next.container.getAttribute("nav") ? $(".nav").attr("color", "white") : $(".nav").attr("color", "green"),
+                        gsap.from($(e.next.container).find(".section"), { opacity: 0, duration: 0.5, ease: "power4.out", delay: 0.25, onComplete() {} });
+                },
+                after() {
+                    $("html").css("cursor", "auto");
+                    gsap
+                        .timeline({ defaults: { ease: "power4.out", duration: 1.25, stagger: { each: 0.025, ease: "power2.out" } } })
+                        .from(".section-divider", { width: "0%", ease: "power3.out", duration: 1 }, "<0.25")
+                        .from(".home-gradient", { opacity: 0 }, "<")
+                        .from('[tl-child="1"] > *', { y: "4rem", opacity: 0 }, "<0.2")
+                        .from('[tl-child="2"] > *', { y: "4rem", opacity: 0 }, "<0.2")
+                        .from('[tl-child="3"] > *', { y: "4rem", opacity: 0 }, "<0.2")
+                        .from('[tl-child="4"] > *', { y: "4rem", opacity: 0 }, "<0.2"),
+                        setTimeout(() => {
+                            Webflow && (Webflow.destroy(), Webflow.ready(), Webflow.require("ix2").init());
+                        }, 50),
+                        window.fsAttributes.cmsfilter.init(),
+                        window.fsAttributes.cmsload.init(),
+                        lenisActive ? window.scrollY > 100 && lenis.scrollTo(0, { offset: 0, immediate: !0, duration: 0 }) : window.scrollTo(0, 0),
+                        allpages(),
+                        loadLottieScript().then(() => {
+                            $(".vc-topic-lottie lottie-player").each(function () {
+                                let e = $(this).attr("src");
+                                this.load(e);
+                            });
+                        });
+                },
+            },
+        ],
+        views: [
+            { namespace: "home", afterEnter(e) {} },
+            { namespace: "about", afterEnter(e) {} },
+        ],
+    });
+let pagetitle;
+function allpages() {
+    function e() {
+        var e = $(window).width(),
+            t = $(".popup-mobile-wrap");
+        e <= 768 ? $(".popup.is-mobile-menu .popup-content").append(t) : $("[original-parent]").append(t);
+    }
+    $(document).ready(function () {
+        $(".logos-marque-item").each(function () {
+            !(function e(t) {
+                var i = $(t).find(".logo-marquee"),
+                    o = i
+                        .filter(function () {
+                            return "1" == $(this).css("opacity");
+                        })
+                        .index();
+                -1 === o && (o = 0);
+                var n = (o + 1) % i.length;
+                i.eq(o).css("opacity", "0"),
+                    i.eq(n).css("opacity", "1"),
+                    setTimeout(function () {
+                        e(t);
+                    }, 8e3 * Math.random() + 2e3);
+            })(this);
+        });
+    }),
+        $("a").each(function (e) {
+            $(this).removeClass("w--current");
+            let t;
+            $(this).attr("href") === window.location.pathname && $(this).addClass("w--current");
+        }),
+        $("[hide-featured]").on("click", function () {
+            $("[featured-vc]").hide();
+        }),
+        $('[class*="faq-item"]').on("click", function () {
+            var e = $(this),
+                t = e.data("clickCount") || 0;
+            1 === t
+                ? (e.removeClass("open"),
+                  setTimeout(function () {
+                      ScrollTrigger.refresh();
+                  }, 600))
+                : (e.siblings().removeClass("open").data("clickCount", 0),
+                  e.addClass("open"),
+                  setTimeout(function () {
+                      ScrollTrigger.refresh();
+                  }, 600)),
+                ++t > 1 && (t = 0),
+                e.data("clickCount", t);
+        }),
+        $(".swiper").each(function (e, t) {
+            let i = $(this).find(".is-next")[0],
+                o = $(this).find(".is-prev")[0];
+            if (0 === $(this).find("div.w-dyn-empty").length) {
+                let n = $(this).find(".swiper-pagination")[0];
+                new Swiper($(this).find(".swiper-container.is-standard")[0], {
+                    grabCursor: !0,
+                    slidesPerView: "auto",
+                    slidesPerGroup: 1,
+                    pagination: { el: n, clickable: !0 },
+                    navigation: { nextEl: i, prevEl: o },
+                    mousewheel: { forceToAxis: !0, invert: !1, sensitivity: 1.5 },
+                }),
+                    new Swiper($(this).find(".swiper-container.is-home")[0], {
+                        slidesPerView: "auto",
+                        loop: !0,
+                        speed: 2e3,
+                        centeredSlides: !0,
+                        autoplay: { enabled: !0, delay: 3e3, reverseDirection: !0 },
+                        slidesPerGroup: 1,
+                        navigation: { nextEl: i, prevEl: o },
+                    });
+            }
+        }),
+        $(".diff-swiper-wrap").each(function (e, t) {
+            let i = $(this).find(".swiper-pagination")[0];
+            new Swiper($(this).find(".swiper-container")[0], {
+                grabCursor: !0,
+                loop: !0,
+                speed: 200,
+                centeredSlides: !0,
+                effect: "fade",
+                fadeEffect: { crossFade: !0 },
+                slidesPerView: "auto",
+                slidesPerGroup: 1,
+                pagination: { el: i, clickable: !0 },
+                mousewheel: { forceToAxis: !0, invert: !1, sensitivity: 1.5 },
+            });
+        }),
+        $(".swiper-container.is-testi").each(function (e, t) {
+            if (0 === $(this).find("div.w-dyn-empty").length) {
+                let i = $(this).find(".swiper-pagination")[0];
+                new Swiper($(this)[0], {
+                    grabCursor: !0,
+                    slidesPerView: "auto",
+                    loop: !0,
+                    effect: "coverflow",
+                    pagination: { el: i, clickable: !0 },
+                    navigation: { nextEl: ".is-next", prevEl: ".is-prev" },
+                    mousewheel: { forceToAxis: !0, invert: !1, sensitivity: 1.5 },
+                    speed: 400,
+                });
+            }
+        }),
+        $("[portfolio-item]").each(function (e, t) {
+            let i = $(this).find(".company-name-list"),
+                o = $(this).find(".portfolio-category-listview");
+            $(this).find("[company-tags]").clone().appendTo(o), $(this).find("[company-name]").clone().appendTo(i);
+        }),
+        $("[list-view]").on("click", function () {
+            $(this).find(".dot").addClass("is-active"),
+                $("[grid-view]").removeClass("is-active"),
+                $("[list-view]").addClass("is-active"),
+                $("[grid-view]").find(".dot").removeClass("is-active"),
+                $(".section-grid.is-cards-team").removeClass("is-grid").addClass("is-list"),
+                $(".list-topbar").addClass("is-list");
+        }),
+        $("[grid-view]").on("click", function () {
+            $(this).find(".dot").addClass("is-active"),
+                $("[grid-view]").addClass("is-active"),
+                $("[list-view]").removeClass("is-active"),
+                $("[list-view]").find(".dot").removeClass("is-active"),
+                $(".section-grid.is-cards-team").removeClass("is-list").addClass("is-grid"),
+                $(".list-topbar").removeClass("is-list");
+        }),
+        gsap.timeline({}),
+        (n = null),
+        $("[open-popup-item]").on("click", function () {
+            $("html").css("cursor", "wait");
+            let e = $(this).find(".cms-link").attr("href");
+            gsap.set(".popup.is-portfolio", { display: "flex" }),
+                gsap.from(".popup.is-portfolio .popup-bk", { opacity: 0 }),
+                gsap.set(".popup.is-portfolio .popup-content", { y: "100vh", opacity: 0 }),
+                null !== n && (n.abort(), (n = null)),
+                (n = $.ajax({
+                    url: e,
+                    success: function (e) {
+                        let t = $(e).find("[popup-content]");
+                        $(".popup.is-portfolio .popup-content").append(t),
+                            $(".popup.is-portfolio .popup-scroll").scrollTop(0),
+                            gsap.to(".popup.is-portfolio .popup-content", { y: "0vh", duration: 1, ease: Expo.easeOut }),
+                            gsap.set(".popup.is-portfolio .popup-content", { opacity: 1 });
+                    },
+                    complete: function () {
+                        (n = null), $("html").css("cursor", "auto");
+                    },
+                    error: function (e, t) {
+                        "abort" === t && console.log("AJAX request was aborted.");
+                    },
+                }));
+        }),
+        $(".popup-scroll").on("click", function () {
+            gsap.set(".popup", { display: "none" }), $(".popup-scroll").scrollTop(0), $("[popup-content]").remove(), gsap.set(".popup-content", { y: "100vh" }), null !== n && (n.abort(), (n = null));
+        }),
+        $(".popup-content").on("click", function (e) {
+            e.stopPropagation();
+        }),
+        $("[open-popup-menu]").on("click", function () {
+            gsap.set(".popup.is-mobile-menu", { display: "flex" }),
+                gsap.from(".popup.is-mobile-menu .popup-bk", { opacity: 0 }),
+                gsap.set(".popup.is-mobile-menu .popup-content", { y: "100vh", opacity: 0 }),
+                gsap.to(".popup.is-mobile-menu .popup-content", { y: "0vh", duration: 1, ease: Expo.easeOut }),
+                gsap.set(".popup.is-mobile-menu .popup-content", { opacity: 1 });
+        }),
+        $(window).on("resize", e),
+        $(document).ready(e),
+        $(".reset-btn").on("click", function () {
+            let e = $(this);
+            setTimeout(function () {
+                e.addClass("is-active");
+            }, 50);
+        }),
+        $(".radio-btn:not(.reset-btn)").on("click", function () {
+            let e = $(this);
+            setTimeout(function () {
+                e.closest(".filters-content-wrap").find(".radio-btn.reset-btn").removeClass("is-active");
+            }, 50);
+        }),
+        $(".count").each(function (e) {
+            ScrollTrigger.create({
+                trigger: $(this),
+                start: "top bottom",
+                end: "top bottom",
+                onEnter: () => {
+                    var e = $(this),
+                        t = e.attr("count");
+                    $({ countNum: 0 }).animate(
+                        { countNum: t },
+                        {
+                            duration: 1e3,
+                            easing: "swing",
+                            step: function () {
+                                e.text(Math.floor(this.countNum));
+                            },
+                            complete: function () {
+                                e.text(this.countNum);
+                            },
+                        }
+                    );
+                },
+            });
+        }),
+        $(".topic-link").hover(
+            function () {
+                $(this).find("lottie-player")[0].play();
+            },
+            function () {
+                $(this).find("lottie-player")[0].pause();
+            }
+        );
+    let t = !0,
+        i = gsap.timeline({ paused: !0, defaults: { ease: Expo.easeInOut, duration: 0.8 } });
+    i
+        .to(".burger-line.middle", { marginTop: "calc(0rem - 1px)", marginBottom: "calc(0rem - 1px)" })
+        .set(".menu-mobile-wrap", { display: "flex" }, "<")
+        .to(".nav-hamb", { rotate: 90, ease: Expo.easeInOut, duration: 0.8 }, "<")
+        .to(".section .container, .centered-txt-wrap", { scale: 0.5, ease: Expo.easeIn, duration: 1, overwrite: !0 }, "<")
+        .from(".menu-mobile-wrap", { opacity: 0, ease: Expo.easeInOut, duration: 0.8 }, "<0.1")
+        .set(".burger-line.middle", { opacity: 0, duration: 0.2 }, "<")
+        .to(".burger-line.top", { rotate: "45deg" }, "<")
+        .to(".burger-line.bottom", { rotate: "-45deg" }, "<")
+        .from($(".menu-mobile-wrap").find(".menu-link, .social-link"), { y: "0.4rem", opacity: 0, duration: 0.6, stagger: 0.025, ease: Expo.easeOut }, "<0.4")
+        .from($(".menu-mobile-wrap").find(".button, .logo-img"), { opacity: 0, duration: 1.2, stagger: 0.25, ease: Expo.easeOut }, "<0.25"),
+        $(".nav-hamb").on("click", function () {
+            t ? (i.timeScale(1), i.play(), (t = !1), lenisActive && lenis.stop()) : (i.timeScale(1.5), i.reverse(), (t = !0), lenisActive && lenis.start());
+        }),
+        $(".menu-link, .nav-logo-wrap, a").on("click", function () {
+            t || ((t = !0), lenisActive && lenis.start());
+        });
+    var o = $("div[team-member]");
+    o.sort(function () {
+        return 0.5 - Math.random();
+    });
+    var n,
+        a = o.slice(0, 4);
+    o.not(a).remove(),
+        $(document).ready(function () {
+            $("[audio-player]").each(function () {
+                var e = $(this),
+                    t = e.find("audio")[0],
+                    i = e.find("[play-btn]"),
+                    o = e.find(".audio-progress-wrap"),
+                    n = e.find(".audio-progress"),
+                    a = e.find("[currenttime]"),
+                    s = e.find("[timeleft]"),
+                    r = e.find("[timetotal]");
+                function l(e) {
+                    var t = Math.floor(e / 60);
+                    return (t = t < 10 ? "0" + t : t) + ":" + (e = (e = Math.floor(e % 60)) < 10 ? "0" + e : e);
+                }
+                (t.src = e.attr("audio-player")),
+                    (t.onloadedmetadata = function () {
+                        r.text(l(t.duration));
+                    }),
+                    i.click(function () {
+                        t.paused
+                            ? (t.play(),
+                              e.find(".is-play").hide(),
+                              e.find(".is-pause").show(),
+                              setTimeout(function () {
+                                  s.show(), r.hide();
+                              }, 500))
+                            : (t.pause(), e.find(".is-play").show(), e.find(".is-pause").hide());
+                    }),
+                    t.addEventListener("timeupdate", function () {
+                        var e = (t.currentTime / t.duration) * 100;
+                        n.width(e + "%"), a.text(l(t.currentTime)), s.text("-" + l(t.duration - t.currentTime));
+                    }),
+                    o.click(function (e) {
+                        var i = (e.pageX - this.offsetLeft) / this.offsetWidth;
+                        t.currentTime = i * t.duration;
+                    });
+            });
+        }),
+        $('.team-member:contains("Partner")').each(function () {
+            $(this).parent().prepend(this);
+        }),
+        $('.team-member:contains("Venture Partner")').hide(),
+        $(".radio-btn").on("click", function () {
+            let e = $(this);
+            e.text().includes("Venture Partner") ? $('.team-member:contains("Venture Partner")').show() : e.text().includes("All") && $('.team-member:contains("Venture Partner")').hide();
+        });
+}
+allpages();
